@@ -1,9 +1,9 @@
 import React from 'react';
 
-import useAmount from '../hooks/use-amount';
+import counter from '../hocs/counter';
 
-export default function Product(props) {
-  const { decrement, increment, amount } = useAmount(0);
+function Product(props) {
+  const { decrement, increment, amount } = props;
 
   return (
     <div>
@@ -15,3 +15,5 @@ export default function Product(props) {
     </div>
   );
 }
+
+export default counter(Product);
