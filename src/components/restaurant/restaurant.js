@@ -1,10 +1,22 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import Menu from '../menu';
 import Reviews from '../reviews';
 import Banner from '../banner';
 import Rate from '../rate';
 import styles from './restaurant.module.css';
 
+const propTypes={
+  restaurant: PropTypes.shape({
+    name: PropTypes.string,
+    menu: PropTypes.array.isRequired,
+    reviews: PropTypes.array.isRequired
+  }).isRequired
+}
+const defaultProps = {
+  menu: [],
+  reviews: []
+}
 const Restaurant = ({ restaurant }) => {
   const { name, menu, reviews } = restaurant;
 
@@ -25,5 +37,6 @@ const Restaurant = ({ restaurant }) => {
     </div>
   );
 };
-
+Restaurant.propTypes = propTypes;
+Restaurant.defaultProps = defaultProps;
 export default Restaurant;

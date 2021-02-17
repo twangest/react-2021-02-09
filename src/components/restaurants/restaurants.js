@@ -1,12 +1,21 @@
-import React, { useState, useMemo } from 'react';
+import React, {useState, useMemo} from 'react';
+import PropTypes from 'prop-types';
 import Restaurant from '../restaurant';
 import Navigation from '../navigation';
 
-const Restaurants = ({ restaurants }) => {
+const propTypes = {
+  restaurants: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired
+    })
+  ).isRequired
+}
+
+const Restaurants = ({restaurants}) => {
   const [activeRestaurantId, setActiveRestaurant] = useState(restaurants[0].id);
 
   const activeRestaurant = useMemo(
-    () => restaurants.find(({ id }) => id === activeRestaurantId),
+    () => restaurants.find(({id}) => id === activeRestaurantId),
     [activeRestaurantId, restaurants]
   );
 
@@ -16,9 +25,11 @@ const Restaurants = ({ restaurants }) => {
         restaurants={restaurants}
         onRestaurantClick={setActiveRestaurant}
       />
-      <Restaurant restaurant={activeRestaurant} />
+      <Restaurant restaurant={activeRestaurant}/>
     </div>
   );
 };
+
+Restaurants.propTypes = propTypes;
 
 export default Restaurants;

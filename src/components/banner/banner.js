@@ -1,8 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 
 import styles from './banner.module.css';
 
 import banner from './banner.jpg';
+
+const propTypes = {
+  heading: PropTypes.string,
+  description: PropTypes.string,
+  children: PropTypes.object
+}
 
 const Banner = ({ heading, description, children }) => (
   <div className={styles.banner}>
@@ -14,5 +21,7 @@ const Banner = ({ heading, description, children }) => (
     </div>
   </div>
 );
+
+Banner.propTypes = propTypes;
 
 export default Banner;
