@@ -1,0 +1,41 @@
+.basket {
+    padding: 12px;
+    margin: 12px;
+    border: 1px solid lightgray;
+}
+.title {
+    width: 100%;
+    font-size: x-large;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.product__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.product__price_wrapper{
+    display: flex;
+}
+
+.product__name {
+    width: 100%
+}
+
+.product__price_amount{
+    font-weight: bold;
+    font-size: larger;
+    margin-left: 12px;
+    width: 20%;
+    text-align: center;
+}
+
+.total{
+   font-size: xx-large;
+    color: var(--grey-dark);
+    width: 20%;
+    text-align: center;
+}

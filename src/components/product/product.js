@@ -5,9 +5,9 @@ import styles from './product.module.css';
 import { ReactComponent as Minus } from '../../icons/minus.svg';
 import { ReactComponent as Plus } from '../../icons/plus.svg';
 
-import { increment, decrement } from '../../redux/actions';
+import { increment, decrement, clearAmount } from '../../redux/actions';
 
-const Product = ({ product, amount, increment, decrement, fetchData }) => {
+const Product = ({ product, amount, increment, decrement, clearAmount, fetchData }) => {
   useEffect(() => {
     fetchData && fetchData(product.id);
   }, []); // eslint-disable-line
@@ -40,6 +40,16 @@ const Product = ({ product, amount, increment, decrement, fetchData }) => {
               >
                 <Plus />
               </button>
+
+            </div>
+            <div className={styles.buttons__clear}>
+              <button
+                className={[styles.button, styles.button__clear].join(' ')}
+                onClick={clearAmount}
+                data-id="product-clear_amount"
+              >
+                x
+              </button>
             </div>
           </div>
         </div>
@@ -59,6 +69,7 @@ Product.propTypes = {
   amount: PropTypes.number,
   increment: PropTypes.func,
   decrement: PropTypes.func,
+  clearAmount: PropTypes.func
 };
 
 const mapStateToProps = (state, props) => ({
@@ -73,6 +84,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch, props) => ({
   increment: () => dispatch(increment(props.product.id)),
   decrement: () => dispatch(decrement(props.product.id)),
+  clearAmount: () => dispatch(clearAmount(props.product.id))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product);

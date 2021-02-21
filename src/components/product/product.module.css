@@ -69,7 +69,12 @@
   align-items: center;
   width: auto;
 }
-
+.buttons__clear {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 .button {
   color: var(--white);
   background-color: var(--yellow);
@@ -89,6 +94,9 @@
   cursor: pointer;
   transition: 0.2s all;
   text-transform: uppercase;
+}
+.button__clear {
+  background-color: var(--orange);
 }
 
 .button:hover,
