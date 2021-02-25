@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import styles from './product.module.css';
 
 import { increment, decrement } from '../../redux/actions';
 
 import Button from '../button';
+import { amountSelector, productSelector } from '../../redux/selectors';
 
 const Product = ({ product, amount, increment, decrement, fetchData }) => {
   useEffect(() => {
@@ -49,15 +51,10 @@ Product.propTypes = {
   decrement: PropTypes.func,
 };
 
-const mapStateToProps = (state, props) => ({
-  amount: state.order[props.id] || 0,
-  product: state.products[props.id],
+const mapStateToProps = createStructuredSelector({
+  amount: amountSelector,
+  product: productSelector,
 });
-
-// const mapDispatchToProps = {
-//   increment,
-//   decrement,
-// };
 
 const mapDispatchToProps = (dispatch, props) => ({
   increment: () => dispatch(increment(props.id)),
