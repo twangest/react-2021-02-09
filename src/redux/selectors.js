@@ -3,7 +3,7 @@ import {createSelector} from 'reselect';
 const restaurantsSelector = (state) => state.restaurants.entities;
 const orderSelector = (state) => state.order;
 const productsSelector = (state) => state.products.entities;
-const reviewsSelector = (state) => state.reviews;
+const reviewsSelector = (state) => state.reviews.entities;
 const usersSelector = (state) => state.users.entities;
 
 export const restaurantsLoadingSelector = (state) => state.restaurants.loading;
@@ -17,13 +17,12 @@ export const usersLoadingSelector = (state) => state.users.loading;
 export const usersLoadedSelector = (state) => state.users.loaded;
 export const usersErrorSelector = (state) => state.users.error;
 
+const arrayHasKeys = (obj, keys) => !![...keys].reduce((acc, item) => acc && Object.keys(obj).includes(item), true)
+
 export const menuProductsLoaded = createSelector(
   productsSelector,
   (_, {restaurant}) => restaurant.menu || [],
-  (products, menu) => {
-     const isLoaded = [...menu].reduce((acc, item) => acc && Object.keys(products).includes(item), true)
-    return !!isLoaded;
-  }
+  (products, menu) => arrayHasKeys(products, menu)
 )
 
 export const restaurantsListSelector = createSelector(
@@ -36,11 +35,14 @@ export const amountSelector = (state, {id}) => orderSelector(state)[id] || 0;
 export const productSelector = createSelector(
   productsSelector,
   (_, {id}) => id,
-  (products, id) => {
-    return Object.keys(products).includes(id) ? products[id] : null;
-  });
+  (products, id) => products?.[id] || null
+  );
 
-const reviewSelector = (state, {id}) => reviewsSelector(state)[id];
+const reviewSelector = createSelector(
+  reviewsSelector,
+  (_, {id}) => id,
+  (reviews, id) => reviews?.[id] || null
+)
 
 export const orderProductsSelector = createSelector(
   orderSelector,
@@ -65,16 +67,25 @@ export const totalSelector = createSelector(
 export const reviewWitUserSelector = createSelector(
   reviewSelector,
   usersSelector,
-  (review, users) => ({
-    ...review,
-    user: users[review.userId]?.name,
-  })
+  (review, users) => {return review ?  {...review, user: users[review.userId]?.name} : null}
 );
+
+export const restaurantReviewsLoadedSelector = createSelector(
+  reviewsSelector,
+  (_, props) => props.restaurant ? props.restaurant.reviews : props,
+  (reviews, ids) => {
+    return arrayHasKeys(reviews, ids);
+  }
+)
+export const reviewsLoadingSelector = state => state.reviews.loading
 
 export const averageRatingSelector = createSelector(
   reviewsSelector,
   (_, {restaurant}) => restaurant.reviews,
-  (reviews, ids) => {
+  restaurantReviewsLoadedSelector,
+
+  (reviews, ids, reviewsLoaded) => {
+    if (!reviewsLoaded) return 0;
     const ratings = ids.map((id) => reviews[id].rating);
     return Math.round(
       ratings.reduce((acc, rating) => acc + rating) / ratings.length
