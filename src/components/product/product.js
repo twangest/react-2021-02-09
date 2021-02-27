@@ -4,23 +4,22 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import styles from './product.module.css';
 
-import { increment, decrement } from '../../redux/actions';
+import {increment, decrement} from '../../redux/actions';
 
 import Button from '../button';
-import { amountSelector, productSelector } from '../../redux/selectors';
+import {amountSelector, productSelector} from '../../redux/selectors';
 
 const Product = ({ product, amount, increment, decrement, fetchData }) => {
   useEffect(() => {
     fetchData && fetchData(product.id);
   }, []); // eslint-disable-line
-
   return (
     <div className={styles.product} data-id="product">
       <div className={styles.content}>
         <div>
-          <h4 className={styles.title}>{product.name}</h4>
-          <p className={styles.description}>{product.ingredients.join(', ')}</p>
-          <div className={styles.price}>{product.price} $</div>
+          <h4 className={styles.title}>{product?.name}</h4>
+          <p className={styles.description}>{product?.ingredients.join(', ')}</p>
+          <div className={styles.price}>{product?.price} $</div>
         </div>
         <div>
           <div className={styles.counter}>
