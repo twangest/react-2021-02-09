@@ -21,7 +21,7 @@ const arrayHasKeys = (obj, keys) => !![...keys].reduce((acc, item) => acc && Obj
 
 export const menuProductsLoaded = createSelector(
   productsSelector,
-  (_, {restaurant}) => restaurant.menu || [],
+  (_, {menu}) => menu,
   (products, menu) => arrayHasKeys(products, menu)
 )
 

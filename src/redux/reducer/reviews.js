@@ -1,39 +1,30 @@
 import {ADD_REVIEW, FAILURE, LOAD_REVIEWS, REQUEST, SUCCESS} from '../constants';
 import { arrToMap } from '../utils';
+import produce from "immer";
 
 const reviewsInitialState = {
   entities: {}, loading: false, error: null
 }
 
-export default (state = reviewsInitialState, action) => {
-  const { type, review, reviewId, userId } = action;
-  const {entities} = state;
+export default produce((draft = reviewsInitialState, action) => {
+  const { type, review, reviewId, userId, error } = action;
   switch (type) {
     case LOAD_REVIEWS + REQUEST:
-      return {
-        ...state,
-        loading: true
-      }
+      draft.loading = true;
+      break;
     case LOAD_REVIEWS + SUCCESS:
-      // const entities = state.entities;
-      return {
-        ...state,
-        loading: false,
-        entities: {...entities, ...arrToMap(action.data)}
-      }
+      draft.loading = false;
+      Object.assign(draft.entities, arrToMap(action.data));
+      break;
     case LOAD_REVIEWS + FAILURE:
-      return {
-        ...state,
-        loading: false,
-        error: action.error
-      }
+      draft.loading = false;
+      draft.error = error
+      break;
     case ADD_REVIEW:
       const { text, rating } = review;
-      return {
-        ...state,
-        entities: {...entities, [reviewId]: { id: reviewId, userId, text, rating }}
-      };
+      draft.entities[reviewId] = { id: reviewId, userId, text, rating }
+      break;
     default:
-      return state;
+      return draft;
   }
-};
+});
