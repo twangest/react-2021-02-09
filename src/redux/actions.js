@@ -40,7 +40,7 @@ export const loadProducts = (restaurantId) => ({
 
 const _loadReviews = (restaurantId) => ({
   type: LOAD_REVIEWS,
-  CallAPI: `/api/reviews?id=${restaurantId}`,
+  CallAPI: `/api/review?id=${restaurantId}`,
   restaurantId,
 });
 
